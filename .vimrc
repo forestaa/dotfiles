@@ -42,7 +42,6 @@ if dein#check_install()
   call dein#install()
 endif
 
-
 " basic settings
 " allow plugin to detect filetype
 filetype plugin indent on 
@@ -56,11 +55,19 @@ set number
 set tabstop=2
 
 " clipboard settings between vim and os
-set clipboard=unnamed
-set clipboard+=autoselect
+" set clipboard=unnamed
+" set clipboard+=autoselect
+set clipboard+=unnamedplus
 
 " mouse scroll, but it doesn't work in tmux
 if has('mouse')
 	set mouse=a
+endif
+
+" neovim
+if has('nvim')
+  let g:python_host_prog = '/home/foresta/.pyenv/versions/2.7.14/envs/neovim2/bin/python'
+  let g:python3_host_prog = '/home/foresta/.pyenv/versions/3.6.3/envs/neovim3/bin/python'
+" 	let g:deoplete#complete_method = 'complete'
 endif
 
