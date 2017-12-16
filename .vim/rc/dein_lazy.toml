@@ -1,3 +1,7 @@
+[[plugins]]
+repo = 'cohama/lexima.vim'
+on_i = 1
+
 [[plugins]] # toml
 repo = 'cespare/vim-toml'
 on_ft = ['toml']
@@ -9,15 +13,44 @@ hook_add = '''
 	let g:go_metalinter_autosave = 1
 '''
 
-[[plugins]] # ruby
-repo = 'Shougo/deoplete-rct'
-on_ft = ['ruby']
+[[plugins]] # deoplete
+repo = 'Shougo/deoplete.nvim'
+on_i = 1
+hook_add = '''
+  let g:deoplete#enable_at_startup = 1
+  let g:deoplete#auto_complete_delay = 0
+		inoremap <silent><expr> <TAB>
+		\ pumvisible() ? "\<C-n>" :
+		\ <SID>check_back_space() ? "\<TAB>" :
+		\ deoplete#mappings#manual_complete()
+		function! s:check_back_space() abort "{{{
+		let col = col('.') - 1
+		return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction"}}}
+'''
 
 [[plugins]] # from deoplete's README
 repo = 'roxma/nvim-yarp'
 if = '!has("nvim")'
+depends = ['deoplete.nvim']
 
 [[plugins]] # from deoplete's README
 repo = 'roxma/vim-hug-neovim-rpc'
 if = '!has("nvim")'
+depends = ['deoplete.nvim']
 
+[[plugins]] # ruby
+repo = 'Shougo/deoplete-rct'
+on_ft = ['ruby']
+depends = ['deoplete.nvim']
+
+[[plugins]] # linter server
+repo = 'w0rp/ale'
+on_ft = ['ruby']
+hook_add = '''
+  let g:ale_lint_on_save = 1
+  let g:ale_lint_on_text_changed = 0
+  let g:ale_set_loclist = 0
+  let g:ale_set_quickfix = 1
+  let g:ale_open_list = 1
+'''

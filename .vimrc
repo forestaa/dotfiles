@@ -53,6 +53,12 @@ set backspace=indent,eol,start
 set number
 " tab length
 set tabstop=2
+set expandtab
+set shiftwidth=2
+
+
+" no swap file
+set noswapfile
 
 " clipboard settings between vim and os
 " set clipboard=unnamed
