@@ -74,6 +74,5 @@ endif
 if has('nvim')
   let g:python_host_prog = '/home/foresta/.pyenv/versions/2.7.14/envs/neovim2/bin/python'
   let g:python3_host_prog = '/home/foresta/.pyenv/versions/3.6.3/envs/neovim3/bin/python'
-" 	let g:deoplete#complete_method = 'complete'
 endif
 
