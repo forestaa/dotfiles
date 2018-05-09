@@ -54,3 +54,13 @@ hook_add = '''
   let g:ale_set_quickfix = 1
   let g:ale_open_list = 1
 '''
+
+[[plugins]] # SATySFi
+repo = 'qnighy/satysfi.vim'
+on_ft = ['satysfi']
+hook_add = '''
+  augroup SATySFiCmd
+    autocmd!
+    autocmd BufWritePost *.saty :lcd %:h | execute ":!satysfi %:p > /dev/null 2>&1" | redraw!
+  augroup END
+'''
