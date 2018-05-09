@@ -127,3 +127,29 @@ keychain --nogui --quiet
 source ~/.keychain/$HOSTNAME-sh
 
 alias nv='nvim'
+
+# python
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+# ruby
+export PATH="$HOME/.rbenv/bin:$PATH"
+if command -v rbenv 1>/dev/null 2>&1; then
+  eval "$(rbenv init -)"
+fi
+
+# node
+if command -v npm 1>/dev/null 2>&1; then
+  export PATH="$HOME/.node_modules/bin:$PATH"
+fi
+
+# ocaml
+if command -v opam 1>/dev/null 2>&1; then
+  eval "$(opam config env)"
+fi
+
+export DISPLAY=localhost:0.0
+
