@@ -4,6 +4,13 @@ endif
 
 augroup MyAutoCmd
 	autocmd!
+  autocmd VimEnter * call dein#call_hook('post_source')
+
+  autocmd ColorScheme * highlight Normal      ctermbg=none
+  autocmd ColorScheme * highlight NonText     ctermbg=none
+  autocmd ColorScheme * highlight LineNr      ctermbg=none
+  autocmd ColorScheme * highlight Folded      ctermbg=none
+  autocmd ColorScheme * highlight EndOfBuffer ctermbg=none
 augroup END
 
 " install plugins into this directory
@@ -70,9 +77,15 @@ if has('mouse')
 	set mouse=a
 endif
 
+" swap up and down key
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+
 " neovim
 if has('nvim')
   let g:python_host_prog = '/home/foresta/.pyenv/versions/2.7.14/envs/neovim2/bin/python'
-  let g:python3_host_prog = '/home/foresta/.pyenv/versions/3.6.3/envs/neovim3/bin/python'
+  let g:python3_host_prog = '/home/foresta/.pyenv/versions/3.6.4/envs/neovim3/bin/python'
 endif
 
