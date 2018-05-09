@@ -46,13 +46,52 @@ depends = ['deoplete.nvim']
 
 [[plugins]] # linter server
 repo = 'w0rp/ale'
-on_ft = ['ruby']
+on_ft = ['ruby', 'haskell']
 hook_add = '''
   let g:ale_lint_on_save = 1
   let g:ale_lint_on_text_changed = 0
   let g:ale_set_loclist = 0
   let g:ale_set_quickfix = 1
   let g:ale_open_list = 1
+
+  let g:ale_linters = {'haskell' : ['stack-ghc-mod', 'stack-ghc', 'hlint']}
+'''
+
+[[plugins]] # haskell
+repo = 'neovimhaskell/haskell-vim'
+on_ft = ['haskell']
+hook_add = '''
+  let g:haskellmode_completion_ghc = 0
+'''
+
+[[plugins]] # haskell
+repo = 'eagletmt/neco-ghc'
+on_ft = ['haskell']
+on_i = 1
+depends = ['deoplete.nvim']
+hook_add = '''
+  let g:necoghc_use_stack = 1
+'''
+
+[[plugins]] # haskell
+repo = 'parsonsmatt/intero-neovim'
+on_ft = ['haskell']
+hook_add = '''
+  let g:intero_use_neomake = 0
+
+  nnoremap [intero] <Nop>
+  nmap <Space>h [intero]
+
+  nmap <silent> [intero]t <Plug>InteroGenericType<CR>
+
+  autocmd MyAutoCmd BufWritePost *.hs call s:intero_load_wrapper()
+  function! s:intero_load_wrapper() abort
+    if g:intero_stack_yaml == $HOME . '/.stack/global-project/stack.yaml'
+      InteroLoadCurrentFile
+    else
+      InteroReload
+    endif
+  endfunction
 '''
 
 [[plugins]] # SATySFi
