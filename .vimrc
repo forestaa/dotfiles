@@ -13,6 +13,14 @@ augroup MyAutoCmd
   autocmd ColorScheme * highlight EndOfBuffer ctermbg=none
 augroup END
 
+augroup MyQuickFix
+  autocmd!
+
+  autocmd QuickFixCmdPost *grep* cwindow
+  " auto-close quickfix window
+  autocmd WinEnter * if (winnr('$') == 1) && (getbufvar(winbufnr(0), '&buftype')) == 'quickfix' | quit | endif
+augroup END
+
 " install plugins into this directory
 let s:dein_dir = expand('~/.cache/dein')
 " dein.vim
@@ -62,7 +70,6 @@ set number
 set tabstop=2
 set expandtab
 set shiftwidth=2
-
 
 " no swap file
 set noswapfile

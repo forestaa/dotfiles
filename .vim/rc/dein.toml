@@ -15,11 +15,20 @@ repo = 'tyru/caw.vim'
 hook_add = '''
 	nmap <C-K> <Plug>(caw:hatpos:toggle)
 	vmap <C-K> <Plug>(caw:hatpos:toggle)
+  
+  augroup CawCommand
+    autocmd!
+    autocmd FileType satysfi let b:caw_oneline_comment = '%'
+  augroup END
 '''
 
-[[plugins]]
+[[plugins]] # change context depends on filetype in script
 repo = 'Shougo/context_filetype.vim'
 
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
 depends = ['context_filetype.vim']
+
+[[plugins]] # git
+repo = 'tpope/vim-fugitive'
+

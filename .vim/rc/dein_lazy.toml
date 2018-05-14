@@ -46,7 +46,7 @@ depends = ['deoplete.nvim']
 
 [[plugins]] # linter server
 repo = 'w0rp/ale'
-on_ft = ['ruby', 'haskell']
+on_ft = ['ruby', 'haskell', 'satysfi']
 hook_add = '''
   let g:ale_lint_on_save = 1
   let g:ale_lint_on_text_changed = 0
@@ -54,7 +54,10 @@ hook_add = '''
   let g:ale_set_quickfix = 1
   let g:ale_open_list = 1
 
-  let g:ale_linters = {'haskell' : ['stack-ghc-mod', 'stack-ghc', 'hlint']}
+  let g:ale_linters = {
+  \   'haskell' : ['stack-ghc-mod', 'stack-ghc', 'hlint']
+  \ , 'satysfi' : ['satysfi']
+  \ }
 '''
 
 [[plugins]] # haskell
@@ -97,9 +100,114 @@ hook_add = '''
 [[plugins]] # SATySFi
 repo = 'qnighy/satysfi.vim'
 on_ft = ['satysfi']
+depends = ['ale']
 hook_add = '''
   augroup SATySFiCmd
     autocmd!
-    autocmd BufWritePost *.saty :lcd %:h | execute ":!satysfi %:p > /dev/null 2>&1" | redraw!
+    " autocmd BufWritePost *.saty :lcd %:h | execute ":!satysfi %:p > /dev/null 2>&1" | redraw!
   augroup END
 '''
+hook_post_source = '''
+  function! GetExecutable(buffer) abort
+    return 'satysfi'
+  endfunction
+ 
+  function! GetCommand(buffer) abort
+      return ale#path#BufferCdString(a:buffer)
+      \   .  ale#Escape(GetExecutable(a:buffer))
+      \   .  ' %s'
+  endfunction
+
+  " Matchs patterns line the following:
+  "
+  "   parsing 'math.saty' ...
+  " ! [Syntax Error at Parser] at line 8, characters 4-5:
+  "
+  " ---- ---- ---- ----
+  "   reading 'math.satyh' ...
+  " ! [Type Error] at line 8, characters 0-4:
+  "   undefined variable 'hoge'.
+  "
+  " ---- ---- ---- ----
+  "   reading 'math.satyh' ...
+  " ! [Type Error] at line 32, characters 52-70:
+  "   this expression has type
+  "     length,
+  "   but is expected of type
+  "     int.
+  "
+  " ---- ---- ---- ----
+  "   reading 'math.satyh' ...
+  " ! [Type Error] at line 3, character 0 to line 857, character 3:
+  "     The implementation does not provide value 'concat', 
+  "     which is required by the signature. 
+  "
+  "   evaluating texts ...
+  " ! [Error] package file not found: dist/fonts/ipaexm.ttf
+  " 
+  function! HandleSATySFiFormat(buffer, lines) abort
+    let l:line_pattern  = '---- ---- ---- ----'
+    let l:ing_pattern   = '\v^\s*(reading|parsing|evaluating)\s*(''(.*)'')?.*'
+    let l:error_pattern = '\v^\s*!\s*(\[.*\])\s*(at\s*line\s*(\d+),\s*characters?\s*(\d+)(-\d+)?\s*(to\s*line\s*\d+,\s*character\s*\d+)?:)?(.*)'
+  
+    " Group the lines into smaller lists.
+    let l:corrected_lines = []
+    for l:line in a:lines
+        if len(matchlist(l:line, l:ing_pattern)) > 0
+            call add(l:corrected_lines, [l:line])
+        elseif match(l:line, l:line_pattern) > 0
+            continue
+        elseif len(l:corrected_lines) > 0
+            call add(l:corrected_lines[-1], l:line)
+        endif
+    endfor
+  
+    " Format messages
+    let l:output = []
+    for l:line_list in l:corrected_lines
+        let l:match_ing = matchlist(l:line_list[0], l:ing_pattern)
+        if l:match_ing[1] == 'parsing' && len(l:line_list) <= 1
+            continue
+        elseif l:match_ing[1] == 'reading'
+            let l:match_error = matchlist(l:line_list[1], l:error_pattern)
+            if ! len(l:match_error) > 0
+                continue
+            endif
+        elseif l:match_ing[1] == 'evaluating'
+            let l:match_error = matchlist(l:line_list[1], l:error_pattern)
+            if ! len(l:match_error) > 0
+                continue
+            endif
+        else
+            let l:match_error = matchlist(l:line_list[1], l:error_pattern)
+        endif
+  
+        let l:filename = l:match_ing[3]
+        let l:text = l:match_error[1] . ' ' . l:match_error[7]
+        for l:line in l:line_list[2:]
+            let l:text .= substitute(l:line, '\s*', ' ', '')
+        endfor
+       
+        let l:item = {
+        \   'filename': l:filename,
+        \   'lnum': l:match_error[3] + 0,
+        \   'col' : l:match_error[4] + 1,
+        \   'text': l:text,
+        \   'type': 'E'
+        \}
+  
+        call add(l:output, l:item)
+    endfor
+  
+    return l:output
+  endfunction
+
+  call ale#linter#Define('satysfi', {
+  \   'name': 'satysfi',
+  \   'executable_callback': 'GetExecutable',
+  \   'command_callback': 'GetCommand',
+  \   'callback': 'HandleSATySFiFormat',
+  \})
+'''
+
+
