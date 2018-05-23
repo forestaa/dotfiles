@@ -60,7 +60,7 @@ hook_add = '''
   \ }
 '''
 
-[[plugins]] # haskell
+[[plugins]] # haskell 
 repo = 'neovimhaskell/haskell-vim'
 on_ft = ['haskell']
 hook_add = '''
@@ -70,7 +70,6 @@ hook_add = '''
 [[plugins]] # haskell
 repo = 'eagletmt/neco-ghc'
 on_ft = ['haskell']
-on_i = 1
 depends = ['deoplete.nvim']
 hook_add = '''
   let g:necoghc_use_stack = 1
