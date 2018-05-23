@@ -1,0 +1,54 @@
+-- vi: set ft=haskell :
+
+Config { 
+  font = "xft:Ricty"
+, bgColor = "black"
+, fgColor = "grey"
+, allDesktops = True
+, position = Top
+, commands = 
+  [
+    Run Network "wlp2s0" [ "-t", "wlp2s0 ⇩<rx>  ⇧<tx>"
+                         , "--Low", "40"
+                         , "--High", "200"
+                         , "-m", "4"
+                         , "--normal", "green"
+                         , "--high", "red"
+                         ] 10
+  , Run Network "eth0" [ "-t", "eth0 ⇩<rx>  ⇧<tx>"
+                       , "--Low", "40"
+                       , "--High", "200"
+                       , "-m", "4"
+                       , "--normal", "green"
+                       , "--high", "red"
+                       ] 10
+  , Run Cpu            [ "--Low", "40"
+                       , "--High", "80"
+                       , "-m", "2"
+                       , "--normal", "green"
+                       , "--high", "red"
+                       ] 10
+  , Run Memory [ "-t", "Mem: <usedratio>%"
+               , "--Low", "40"
+               , "--High", "80"
+               , "--normal", "green"
+               , "--high", "red"
+               ] 10
+  , Run Swap [] 10
+  , Run Battery [ "-t", "<acstatus>"
+                , "--Low", "20"
+                , "--High", "80"
+                , "--normal", "green"
+                , "--high", "red"
+                , "--"
+                , "-o", "<left>% (<timeleft>)"
+                , "-O", "Charging <left>%"
+                , "-i", "<left>%"
+                ] 50
+  , Run Date "%Y/%m/%d(%a) %H:%M:%S" "date" 10
+  , Run StdinReader
+  ]
+, sepChar = "%"
+, alignSep = "}{"
+, template = "%StdinReader%}{%cpu% | %memory% * %swap% | %wlp2s0% - %eth0% | %battery% |<fc=#ee9a00>%date%</fc>"
+}
