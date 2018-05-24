@@ -11,6 +11,7 @@ augroup MyAutoCmd
   autocmd ColorScheme * highlight LineNr      ctermbg=none
   autocmd ColorScheme * highlight Folded      ctermbg=none
   autocmd ColorScheme * highlight EndOfBuffer ctermbg=none
+  autocmd ColorScheme * highlight Visual      ctermbg=233
 augroup END
 
 augroup MyQuickFix
