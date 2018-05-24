@@ -19,6 +19,7 @@ bindkey -e
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/foresta/.zshrc'
 
+fpath+=$HOME/.zsh/functions
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
