@@ -44,9 +44,14 @@ repo = 'Shougo/deoplete-rct'
 on_ft = ['ruby']
 depends = ['deoplete.nvim']
 
+[[plugins]] # c
+repo = 'zchee/deoplete-clang'
+on_ft = ['c']
+hook_add = '''
+'''
 [[plugins]] # linter server
 repo = 'w0rp/ale'
-on_ft = ['ruby', 'haskell', 'satysfi']
+on_ft = ['ruby', 'haskell', 'satysfi', 'c']
 hook_add = '''
   let g:ale_lint_on_save = 1
   let g:ale_lint_on_text_changed = 0
@@ -57,6 +62,7 @@ hook_add = '''
   let g:ale_linters = {
   \   'haskell' : ['stack-ghc-mod', 'stack-ghc', 'hlint']
   \ , 'satysfi' : ['satysfi']
+  \ , 'c'       : ['clang']
   \ }
 '''
 
