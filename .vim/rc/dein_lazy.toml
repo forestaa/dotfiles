@@ -51,7 +51,7 @@ hook_add = '''
 '''
 [[plugins]] # linter server
 repo = 'w0rp/ale'
-on_ft = ['ruby', 'haskell', 'satysfi', 'c']
+on_ft = ['ruby', 'haskell', 'satysfi', 'c', 'rust']
 hook_add = '''
   let g:ale_lint_on_save = 1
   let g:ale_lint_on_text_changed = 0
@@ -63,7 +63,27 @@ hook_add = '''
   \   'haskell' : ['stack-ghc-mod', 'stack-ghc', 'hlint']
   \ , 'satysfi' : ['satysfi']
   \ , 'c'       : ['clang']
+  \ , 'rust'    : ['rustc']
   \ }
+
+  let g:ale_rust_rls_toolchain = 'nightly'
+  let g:ale_rust_rustc_options = ''
+'''
+
+[[plugins]] # language server protocol
+repo = 'autozimu/LanguageClient-neovim'
+rev = 'next'
+on_ft = ['rust']
+build = './install.sh'
+hook_add = '''
+  set hidden
+  let g:LanguageClient_serverCommands = {
+      \ 'rust': ['rustup', 'run', 'nightly', 'rls']
+      \ }
+  let g:LanguageClient_autoStart = 1
+  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 '''
 
 [[plugins]] # haskell 
@@ -215,4 +235,10 @@ hook_post_source = '''
   \})
 '''
 
+[[plugins]] # rust
+repo = 'rust-lang/rust.vim'
+on_ft = ['rust']
+hook_add =  '''
+  let g:rustfmt_autosave = 1
+'''
 
