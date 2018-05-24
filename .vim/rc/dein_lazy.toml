@@ -80,10 +80,10 @@ hook_add = '''
   let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'nightly', 'rls']
       \ }
-  let g:LanguageClient_autoStart = 1
-  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+  let g:LanguageClient_autoStart = 0
+  " nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+  " nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+  " nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 '''
 
 [[plugins]] # haskell 
@@ -242,3 +242,10 @@ hook_add =  '''
   let g:rustfmt_autosave = 1
 '''
 
+[[plugins]] # deoplete-rust
+repo = 'sebastianmarkow/deoplete-rust'
+on_ft = ['rust']
+hook_add = '''
+  let g:deoplete#sources#rust#racer_binary='/home/foresta/.cargo/bin/racer'
+  let g:deoplete#sources#rust#rust_source_path='/home/foresta/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
+'''
