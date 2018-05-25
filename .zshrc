@@ -71,6 +71,12 @@ source ~/.keychain/$(hostname)-sh
 
 alias nv='nvim'
 
+# xdg base directory
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+
+
 # python
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -79,7 +85,8 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 # ruby
-export PATH="$HOME/.rbenv/bin:$PATH"
+export RBENV_ROOT="$HOME/.rbenv"
+export PATH="$RBENV_ROOT/bin:$PATH"
 if command -v rbenv 1>/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
@@ -94,4 +101,5 @@ if command -v opam 1>/dev/null 2>&1; then
   eval "$(opam config env)"
 fi
 
+export PATH="$HOME/.local/bin:$PATH"
 # export DISPLAY=localhost:0.0
