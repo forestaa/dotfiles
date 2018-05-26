@@ -1,5 +1,7 @@
+
 import Control.Monad.State.Class
 import Data.Monoid
+
 
 import Graphics.X11.Types
 import XMonad.Core
@@ -23,17 +25,18 @@ import Debug.Trace
 main :: IO ()
 main = do
   n <- countScreens :: IO Integer
-  bars <- mapM (spawnPipe . (++) "xmobar /home/foresta/.xmonad/xmobarrc -x " . show) [0..n-1] 
+  bars <- mapM (spawnPipe . (++) "xmobar /home/foresta/dotfiles/xmonad/app/xmobarrc -x " . show) [0..n-1] 
   xmonad $ def 
     { terminal = myTerminal
     , layoutHook = avoidStruts myLayout
     , borderWidth = 2
-    , manageHook = myManageHookShift <+> manageDocks <+> manageSpawn
+    , manageHook = manageDocks <+> myManageHookShift <+> manageSpawn
     , handleEventHook = docksEventHook <+> handleEventHook def
     , XMonad.Core.workspaces = myWorkSpaces
     , modMask = mod4Mask
     , logHook = dynamicLogWithPP $ xmobarPP { ppOutput = \message -> mapM_ (`hPutStrLn` message) bars }
-    , startupHook = myStartupHook
+
+    , startupHook = docksStartupHook <+> myStartupHook
     }
     `additionalKeysP`
     [
@@ -70,14 +73,19 @@ main = do
     , ("M-<Return>", spawn myTerminal)
     ]
 
+
 debug :: X ()
 debug = do
-  s <- gets  windowset
-  traceShow (show s) $ return ()
-  n <- io countScreens :: X Integer
-  traceShow (show n) $ return ()
+  w <- gets  windowset
+  traceShow (show w) $ return ()
+  -- c <- ask
+  -- traceShow (show c) $ return ()
+  -- n <- io countScreens :: X Integer
+  -- traceShow (show n) $ return ()
   -- n <- XS.get :: X ScreenCount
   -- traceShow (show n) $ return ()
+  -- s <- get
+  -- traceShow (show s) $ return ()
 
 myTerminal :: String
 myTerminal = "urxvtc"
@@ -176,3 +184,11 @@ addFocused a w@Workspace{stack = Just s}  = w{stack = Just $ s{XMonad.StackSet.f
 --   initialValue = ScreenCount 1
 
 -- screenRearrange ::
+---- instance Show XState where
+--   show s = intercalate "\n" [ "windowset      = ", show $ windowset s
+--                             , "mapped         = ", show $ mapped s
+--                             , "waitingUnmap   = ", show $ waitingUnmap s
+--                             , "numberlockMask = ", show $ numberlockMask s
+--                             ]
+
+
