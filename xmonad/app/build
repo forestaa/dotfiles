@@ -1,0 +1,2 @@
+#!/bin/bash
+cd $HOME/dotfiles/xmonad/app && stack build && cp `stack path --local-install-root`/bin/xmonad /tmp && mv /tmp/xmonad $1
