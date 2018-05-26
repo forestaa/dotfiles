@@ -70,6 +70,7 @@ keychain --nogui --quiet
 source ~/.keychain/$(hostname)-sh
 
 alias nv='nvim'
+alias chrome='google-chrome-stable > /dev/null 2>&1 &'
 
 # xdg base directory
 export XDG_CONFIG_HOME=$HOME/.config
