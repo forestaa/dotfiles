@@ -2,7 +2,6 @@
 import Control.Monad.State.Class
 import Data.Monoid
 
-
 import Graphics.X11.Types
 import XMonad.Core
 import XMonad.Actions.SpawnOn
@@ -21,6 +20,7 @@ import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
 
 import Debug.Trace
+
 
 main :: IO ()
 main = do
@@ -71,6 +71,9 @@ main = do
     [
       ("M-C-l",      spawn "light-locker-command -l")
     , ("M-<Return>", spawn myTerminal)
+    , ("<XF86AudioMute>", spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    , ("<XF86AudioRaiseVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ +2%")
+    , ("<XF86AudioLowerVolume>", spawn "pactl set-sink-volume @DEFAULT_SINK@ -2%")
     ]
 
 
