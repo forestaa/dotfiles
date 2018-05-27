@@ -48,6 +48,7 @@ depends = ['deoplete.nvim']
 repo = 'zchee/deoplete-clang'
 on_ft = ['c']
 hook_add = '''
+
 '''
 [[plugins]] # linter server
 repo = 'w0rp/ale'
@@ -63,7 +64,7 @@ hook_add = '''
   \   'haskell' : ['stack-ghc-mod', 'stack-ghc', 'hlint']
   \ , 'satysfi' : ['satysfi']
   \ , 'c'       : ['clang']
-  \ , 'rust'    : ['rustc']
+  \ , 'rust'    : ['cargo']
   \ }
 
   let g:ale_rust_rls_toolchain = 'nightly'
@@ -73,17 +74,19 @@ hook_add = '''
 [[plugins]] # language server protocol
 repo = 'autozimu/LanguageClient-neovim'
 rev = 'next'
-on_ft = ['rust']
-build = './install.sh'
+on_ft = []
+build = 'bash install.sh'
 hook_add = '''
   set hidden
   let g:LanguageClient_serverCommands = {
-      \ 'rust': ['rustup', 'run', 'nightly', 'rls']
+      \   'rust': ['rustup', 'run', 'nightly', 'rls']
+      \ , 'haskell': ['hie', '--lsp']
       \ }
-  let g:LanguageClient_autoStart = 0
-  " nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-  " nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-  " nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+  let g:LanguageClient_autoStart = 1
+  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+  let g:LanguageClient_loggingLevel = 'DEBUG'
 '''
 
 [[plugins]] # haskell 
@@ -104,7 +107,7 @@ hook_add = '''
 [[plugins]] # haskell
 repo = 'parsonsmatt/intero-neovim'
 on_ft = ['haskell']
-hook_add = '''
+hook_source = '''
   let g:intero_use_neomake = 0
 
   nnoremap [intero] <Nop>
