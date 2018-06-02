@@ -41,22 +41,22 @@ main = do
     `additionalKeysP`
     [
     -- Go to the next / prev workspace 
-      ("M-<Right>", myNextWS)
-    , ("M-<Left>", myPrevWS)
+      ("M-<Right>", windows focusNextWS)
+    , ("M-<Left>", windows focusPrevWS)
     -- Go to the next / prev screen
-    , ("M-S-<Right>", myNextScreen)
-    , ("M-S-<Left>", myPrevScreen)
+    , ("M-S-<Right>", windows focusNextScreen)
+    , ("M-S-<Left>", windows focusPrevScreen)
     -- Shift the focused window to the next / previous workspace
-    , ("M-C-<Right>", myShiftWindowToNextWS >> myNextWS)
-    , ("M-C-<Left>",  myShiftWindowToPrevWS >> myPrevWS)
+    , ("M-C-<Right>", myShiftWindowToNextWS >> windows focusNextWS)
+    , ("M-C-<Left>",  myShiftWindowToPrevWS >> windows focusPrevWS)
     -- Shift the focused window to the next / previous screen
-    , ("M-S-C-<Right>", myShiftWindowToNextScreen >> myNextScreen)
-    , ("M-S-C-<Left>",  myShiftWindowToPrevScreen >> myPrevScreen)
+    , ("M-S-C-<Right>", myShiftWindowToNextScreen >> windows focusNextScreen)
+    , ("M-S-C-<Left>",  myShiftWindowToPrevScreen >> windows focusPrevScreen)
     -- Move the focus down / up 
     , ("M-k", windows focusUp)
     , ("M-j", windows focusDown)
-    , ("M-h", windows focusMaster)
-    , ("M-l", windows focusDown)
+    , ("M-h", windows focusLeft)
+    , ("M-l", windows focusRight)
     , ("M-m", windows shiftMaster)
     -- Resize the focused window
     , ("M-S-j", sendMessage MirrorShrink)
@@ -117,23 +117,6 @@ myManageHookShift = composeAll
   , stringProperty "WM_NAME" =? "Event Tester" --> doFloat
   ]
 
-myNextWS :: X ()
-myNextWS = windows $ \ws -> ws{ current = (current ws){workspace = head $ hidden ws}
-                              , hidden  = tail (hidden ws) ++ [workspace $ current ws]
-                              }
-myPrevWS :: X ()
-myPrevWS = windows $ \ws -> ws{ current = (current ws){workspace = last $ hidden ws}
-                              , hidden  = workspace (current ws) : init (hidden ws)
-                              }
-myNextScreen :: X ()
-myNextScreen = windows $ \ws -> ws{ current = head $ visible ws
-                                  , visible = tail (visible ws) ++ [current ws]
-                                  }
-myPrevScreen :: X ()
-myPrevScreen = windows $ \ws -> ws{ current = last $ visible ws
-                                  , visible = current ws : init (visible ws)
-                                  }
-
 data ScreenWS = SCreen | WS
 myShiftWindowTo :: ScreenWS -> Direction1D -> X ()
 myShiftWindowTo sws d = windows $ \ws ->
@@ -180,6 +163,52 @@ removeFocused (Stack _ (w:ws) ws') = Just $ Stack w ws ws'
 addFocused :: a -> Workspace i l a -> Workspace i l a
 addFocused a w@Workspace{stack = Nothing} = w{stack = Just $ Stack a [] []}
 addFocused a w@Workspace{stack = Just s}  = w{stack = Just $ s{XMonad.StackSet.focus = a, up = [], down = integrate s}}
+
+focusRight :: WindowSet -> WindowSet
+focusRight ws =
+  case stack . workspace $ current ws of
+    Just (Stack _ u dn) | null u && not (null dn) -> focusDown ws
+    _                                             -> focusNext ws
+focusLeft :: WindowSet -> WindowSet
+focusLeft ws =
+  case stack . workspace $ current ws of
+    Just (Stack _ u dn) | not (null u) -> focusMaster ws
+    _                                  -> focusPrev ws
+
+focusNext :: WindowSet -> WindowSet
+focusNext ws 
+  | null (visible ws) = focusMaster $ focusNextWS ws
+  | otherwise         = focusMaster $ focusNextScreen ws
+focusPrev :: WindowSet -> WindowSet
+focusPrev ws
+  | null (visible ws) = focusLast $ focusPrevWS ws
+  | otherwise         = focusLast $ focusPrevScreen ws
+focusLast :: WindowSet -> WindowSet
+focusLast ws = case stack cw of
+  Just (Stack f u d) | not (null d) -> ws{ current = cs{workspace = cw{stack = Just $ Stack (last d) (reverse (init d) ++ [f] ++ u) []}}}
+  _            -> ws
+  where
+    cs = current ws
+    cw = workspace cs
+focusNextWS :: WindowSet -> WindowSet
+focusNextWS ws = ws{ current = (current ws){workspace = head $ hidden ws}
+                   , hidden  = tail (hidden ws) ++ [workspace $ current ws]
+                   }
+focusPrevWS :: WindowSet -> WindowSet
+focusPrevWS ws = ws{ current = (current ws){workspace = last $ hidden ws}
+                   , hidden  = workspace (current ws) : init (hidden ws)
+                   }
+focusNextScreen :: WindowSet -> WindowSet
+focusNextScreen ws | null (visible ws) = ws
+                   | otherwise         = ws{ current = head $ visible ws
+                                           , visible = tail (visible ws) ++ [current ws]
+                                           }
+focusPrevScreen :: WindowSet -> WindowSet
+focusPrevScreen ws | null (visible ws) = ws
+                   | otherwise         = ws{ current = last $ visible ws
+                                           , visible = current ws : init (visible ws)
+                                           }
+
 
 -- data ScreenCount = forall i. Integral i => ScreenCount i
 -- newtype ScreenCount = ScreenCount { screencount :: Integer } deriving (Show)
