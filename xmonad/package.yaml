@@ -30,8 +30,10 @@ executables:
     main:                xmonad.hs
     source-dirs:         app
     dependencies:
+    - containers
+    - mtl
+    - utf8-string
     - xmonad
     - xmonad-contrib 
-    - mtl
     - X11
 

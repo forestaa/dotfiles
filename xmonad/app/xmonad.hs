@@ -1,12 +1,19 @@
 
+import Codec.Binary.UTF8.String (encodeString)
+import Control.Monad (zipWithM_)
 import Control.Monad.State.Class
+import Data.List (delete, intercalate)
+import Data.Map.Strict (Map, fromList, (!))
+import Data.Maybe (catMaybes, isJust)
 import Data.Monoid
+import System.IO (Handle)
 
 import Graphics.X11.Types
 import XMonad.Core
 import XMonad.Actions.SpawnOn
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.UrgencyHook
 import XMonad.Layout
 import XMonad.Layout.IndependentScreens
 import XMonad.Layout.ResizableTile
@@ -18,14 +25,17 @@ import XMonad.StackSet
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
+import XMonad.Util.NamedWindows
+import XMonad.Util.WorkspaceCompare
 
 import Debug.Trace
 
 
 main :: IO ()
 main = do
-  n <- countScreens :: IO Integer
+  n <- countScreens :: IO Int
   bars <- mapM (spawnPipe . (++) "xmobar /home/foresta/dotfiles/xmonad/app/xmobarrc -x " . show) [0..n-1] 
+  let barmap = fromList $ zip [0..n-1] bars
   xmonad $ def 
     { terminal = myTerminal
     , layoutHook = avoidStruts myLayout
@@ -34,8 +44,7 @@ main = do
     , handleEventHook = docksEventHook <+> handleEventHook def
     , XMonad.Core.workspaces = myWorkSpaces
     , modMask = mod4Mask
-    , logHook = dynamicLogWithPP $ xmobarPP { ppOutput = \message -> mapM_ (`hPutStrLn` message) bars }
-
+    , logHook = dynamicLogWithPPForEachScreen xmobarPP barmap
     , startupHook = docksStartupHook <+> myStartupHook
     }
     `additionalKeysP`
@@ -113,7 +122,8 @@ myLayout = ResizableTall 1 (3/100) (1/2) [] ||| Full
 myManageHookShift :: Query (Endo WindowSet)
 myManageHookShift = composeAll 
   [
-    className =? "Google-chrome" --> doShift browserWorkSpace
+    className =? "Google-chrome"               --> doShift browserWorkSpace
+  , className =? "Matplotlib"                  --> doFloat
   , stringProperty "WM_NAME" =? "Event Tester" --> doFloat
   ]
 
@@ -172,8 +182,8 @@ focusRight ws =
 focusLeft :: WindowSet -> WindowSet
 focusLeft ws =
   case stack . workspace $ current ws of
-    Just (Stack _ u dn) | not (null u) -> focusMaster ws
-    _                                  -> focusPrev ws
+    Just (Stack _ u _) | not (null u) -> focusMaster ws
+    _                                 -> focusPrev ws
 
 focusNext :: WindowSet -> WindowSet
 focusNext ws 
@@ -199,16 +209,52 @@ focusPrevWS ws = ws{ current = (current ws){workspace = last $ hidden ws}
                    , hidden  = workspace (current ws) : init (hidden ws)
                    }
 focusNextScreen :: WindowSet -> WindowSet
-focusNextScreen ws | null (visible ws) = ws
-                   | otherwise         = ws{ current = head $ visible ws
-                                           , visible = tail (visible ws) ++ [current ws]
-                                           }
+focusNextScreen ws 
+  | null (visible ws) = ws
+  | otherwise         = ws{ current = head $ visible ws
+                          , visible = tail (visible ws) ++ [current ws]
+                          }
 focusPrevScreen :: WindowSet -> WindowSet
-focusPrevScreen ws | null (visible ws) = ws
-                   | otherwise         = ws{ current = last $ visible ws
-                                           , visible = current ws : init (visible ws)
-                                           }
+focusPrevScreen ws 
+  | null (visible ws) = ws
+  | otherwise         = ws{ current = last $ visible ws
+                          , visible = current ws : init (visible ws)
+                          }
 
+-- dynamic appropriate logginf for each screen
+dynamicLogWithPPForEachScreen :: PP -> Map Int Handle -> X ()
+dynamicLogWithPPForEachScreen pp handlemap = do
+  winset <- gets windowset 
+  let screens = current winset : visible winset
+  messages <- mapM (dynamicLogStringForAnScreen pp winset) screens
+  io $ zipWithM_ (\(Screen _ (S n) _) message -> hPutStrLn (handlemap ! n) message) screens messages
+
+dynamicLogStringForAnScreen :: PP -> WindowSet -> Screen WorkspaceId (Layout Window) Window ScreenId ScreenDetail ->  X String
+dynamicLogStringForAnScreen pp winset s = do
+  urgents <- readUrgents
+  sort' <- ppSort pp
+  let ws = pprWindowSetForEachScreen sort' urgents pp winset s
+  title <- maybe (return "") (fmap show . getName) . fmap XMonad.StackSet.focus . stack $ workspace s
+  extras <- mapM (`catchX` return Nothing)  $ ppExtras pp
+  return . encodeString . sepBy (ppSep pp) . ppOrder pp $ [ws, ppLayout pp ld, ppTitle  pp $ ppTitleSanitize pp title] ++ catMaybes extras
+  where
+    ld = description . layout $ workspace s
+
+pprWindowSetForEachScreen :: WorkspaceSort -> [Window] -> PP -> WindowSet -> Screen WorkspaceId (Layout Window) Window ScreenId ScreenDetail -> String
+pprWindowSetForEachScreen sort' urgents pp s screen = 
+  sepBy (ppWsSep pp) . map fmt . sort' $ map workspace (current s : visible s) ++ hidden s
+  where 
+    this = tag $ workspace screen
+    visibles = Data.List.delete this $ map (tag . workspace) (current s : visible s)
+    fmt w = printer pp (tag w)
+      where printer | any (\x ->  (== Just (tag w)) (findTag x s)) urgents  = ppUrgent
+                    | tag w == this                                               = ppCurrent
+                    | tag w `elem` visibles                                       = ppVisible
+                    | isJust (stack w)                                            = ppHidden
+                    | otherwise                                                     = ppHiddenNoWindows
+
+sepBy :: String -> [String] -> String
+sepBy sep = intercalate sep . Prelude.filter (not . null)
 
 -- data ScreenCount = forall i. Integral i => ScreenCount i
 -- newtype ScreenCount = ScreenCount { screencount :: Integer } deriving (Show)
