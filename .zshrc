@@ -94,3 +94,6 @@ if command -v opam 1>/dev/null 2>&1; then
 fi
 
 export DISPLAY=localhost:0.0
+
+# vagrant in wsl
+export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
