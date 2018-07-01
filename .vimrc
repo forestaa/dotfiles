@@ -94,5 +94,18 @@ nnoremap gk k
 if has('nvim')
   let g:python_host_prog = '/home/foresta/.pyenv/versions/2.7.14/envs/neovim2/bin/python'
   let g:python3_host_prog = '/home/foresta/.pyenv/versions/3.6.5/envs/neovim3/bin/python'
+
+  let g:clipboard = {
+  \   'name': 'win32yank',
+  \   'copy': {
+  \     '+': '/mnt/c/Users/tdaic/AppData/Local/win32yank/target/release/win32yank.exe -i',
+  \     '*': '/mnt/c/Users/tdaic/AppData/Local/win32yank/target/release/win32yank.exe -i',
+  \   },
+  \   'paste': {
+  \     '+': '/mnt/c/Users/tdaic/AppData/Local/win32yank/target/release/win32yank.exe -o',
+  \     '*': '/mnt/c/Users/tdaic/AppData/Local/win32yank/target/release/win32yank.exe -o',
+  \   },
+  \   'cache_enabled': 1,
+  \ }
 endif
 
