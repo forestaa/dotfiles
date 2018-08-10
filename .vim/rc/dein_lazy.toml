@@ -119,6 +119,7 @@ hook_post_source = '''
 
   " Matchs patterns line the following:
   "
+  " (no version)
   "   parsing 'math.saty' ...
   " ! [Syntax Error at Parser] at line 8, characters 4-5:
   "
@@ -144,10 +145,48 @@ hook_post_source = '''
   "   evaluating texts ...
   " ! [Error] package file not found: dist/fonts/ipaexm.ttf
   " 
+  "
+  "
+  " (version 0.0.2)
+  "  parsing 'list.satyh' ...
+  " ! [Syntax Error at Lexer] at "list.satyh", line 29, characters 7-8:
+  "     illegal token '&' in a program area
+  "
+  "   parsing 'list.satyh' ...
+  " ! [Syntax Error at Parser] at "", line 23, characters 0-4:
+  "
+  "  ---- ---- ---- ----
+  "   reading 'math.satyh' ...
+  " ! [Type Error] at "math.satyh", line 441, characters 4-8:
+  "     undefined variable 'hoge'.
+  " 
+  " ---- ---- ---- ----
+  "  reading 'list.satyh' ...
+  " ! [Type Error] at "list.satyh", line 2, character 0 to line 135, character 5:
+  "     The implementation of value 'mapi' has type
+  "       (int -> 'a -> 'b) -> 'a list -> 'b list
+  "     which is inconsistent with the type required by the signature
+  "       (int -> '#a -> '#b) -> '#a list -> '#b list
+  "
+  "  ---- ---- ---- ----
+  "   reading 'math.satyh' ...
+  " ! [Type Error] at "math.satyh", line 994, characters 33-38:
+  "     this expression has type
+  "       length,
+  "     but is expected of type
+  "       float.
+  "
+  "   evaluating texts ...
+  " ! [Error] package file not found:
+  "       dist/fonts/ipaexg.ttf
+  "     candidate directories for the SATySFi library root:
+  "       /home/foresta/.satysfi
+  "       /usr/local/share/satysfij
+  "       /usr/share/satysfi
   function! HandleSATySFiFormat(buffer, lines) abort
     let l:line_pattern  = '---- ---- ---- ----'
-    let l:ing_pattern   = '\v^\s*(reading|parsing|evaluating)\s*(''(.*)'')?.*'
-    let l:error_pattern = '\v^\s*!\s*(\[.*\])\s*(at\s*line\s*(\d+),\s*characters?\s*(\d+)(-\d+)?\s*(to\s*line\s*\d+,\s*character\s*\d+)?:)?(.*)'
+    let l:ing_pattern   = '\v^\s*(reading|parsing|evaluating|breaking|embedding|writing)\s*(''(.*)'')?.*'
+    let l:error_pattern = '\v^\s*!\s*(\[.*\])\s*%(at\s*%(\"(.*)\",)?\s*line\s*(\d+),\s*characters?\s*(\d+)%(-(\d+))?\s*%(to\s*line\s*(\d+),\s*character\s*(\d+))?:)?(.*)'
   
     " Group the lines into smaller lists.
     let l:corrected_lines = []
@@ -165,24 +204,17 @@ hook_post_source = '''
     let l:output = []
     for l:line_list in l:corrected_lines
         let l:match_ing = matchlist(l:line_list[0], l:ing_pattern)
-        if l:match_ing[1] == 'parsing' && len(l:line_list) <= 1
-            continue
-        elseif l:match_ing[1] == 'reading'
-            let l:match_error = matchlist(l:line_list[1], l:error_pattern)
-            if ! len(l:match_error) > 0
-                continue
-            endif
-        elseif l:match_ing[1] == 'evaluating'
-            let l:match_error = matchlist(l:line_list[1], l:error_pattern)
-            if ! len(l:match_error) > 0
-                continue
-            endif
-        else
-            let l:match_error = matchlist(l:line_list[1], l:error_pattern)
+        if len(l:match_ing) <= 0 || len(line_list) <= 1
+          continue
+        endif
+
+        let l:match_error = matchlist(l:line_list[1], l:error_pattern)
+        if len(match_error) <= 0
+          continue
         endif
   
         let l:filename = l:match_ing[3]
-        let l:text = l:match_error[1] . ' ' . l:match_error[7]
+        let l:text = l:match_error[1] . ' ' . l:match_error[8]
         for l:line in l:line_list[2:]
             let l:text .= substitute(l:line, '\s*', ' ', '')
         endfor
