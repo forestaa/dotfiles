@@ -85,7 +85,7 @@ fi
 
 # node
 if command -v npm 1>/dev/null 2>&1; then
-  export PATH="$HOME/.node_modules/bin:$PATH"
+  # export PATH="$HOME/.node_modules/bin:$PATH"
 fi
 
 # ocaml
