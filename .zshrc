@@ -49,7 +49,7 @@ zplug load
 # ignore case when typing lowercase, but respect case when typing uppercase
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 
-export PROMPT=$'%{$fg_bold[green]%}%n@%m %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)\n%{$fg_bold[cyan]%}->%{$fg_bold[cyan]%} %#%{$reset_color%} '
+export PROMPT=$'%{$fg_bold[green]%}%n@%m %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)\n%{$fg_bold[blue]%}->%{$fg_bold[blue]%} %#%{$reset_color%} '
 # export PROMPT=$'%{$fg_bold[green]%}%n@%m %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)\n%{$fg_bold[blue]%}->%{$fg_bold[blue]%} %#%{$reset_color%} '
 
 
