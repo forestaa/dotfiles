@@ -32,3 +32,5 @@ depends = ['context_filetype.vim']
 [[plugins]] # git
 repo = 'tpope/vim-fugitive'
 
+[[plugins]] # parenthesis
+repo =  'tpope/vim-surround'
