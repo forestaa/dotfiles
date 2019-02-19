@@ -1,0 +1,18 @@
+# screenlock
+light-locker &
+
+# wallpaper
+# sh ~/.fehbg &
+feh --bg-scale '/home/foresta/Downloads/archlinux-black.jpg' &
+
+# composite for transparency
+compton -b &
+
+# urxvt deamon
+urxvtd -q -o -f
+
+# fcitx, mozc
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+fcitx-autostart
