@@ -252,3 +252,8 @@ hook_add = '''
   let g:deoplete#sources#rust#racer_binary='/home/foresta/.cargo/bin/racer'
   let g:deoplete#sources#rust#rust_source_path='/home/foresta/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
 '''
+
+[[plugins]] # fstar
+repo = 'FStarLang/VimFStar'
+on_ft = ['fstar']
+
