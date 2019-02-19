@@ -104,5 +104,7 @@ if command -v opam 1>/dev/null 2>&1; then
   eval "$(opam config env)"
 fi
 
+export GOPATH="$HOME/go"
+
 export PATH="$HOME/.local/bin:$PATH"
-# export DISPLAY=localhost:0.0
+
