@@ -6,7 +6,8 @@ light-locker &
 feh --bg-scale $HOME/.logo/archlinux-black.jpg &
 
 # composite for transparency
-compton -b &
+# compton -b &
+xcompmgr -c &
 
 # urxvt deamon
 urxvtd -q -o -f
