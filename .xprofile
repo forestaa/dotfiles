@@ -3,7 +3,7 @@ light-locker &
 
 # wallpaper
 # sh ~/.fehbg &
-feh --bg-scale '/home/foresta/Downloads/archlinux-black.jpg' &
+feh --bg-scale $HOME/.logo/archlinux-black.jpg &
 
 # composite for transparency
 compton -b &

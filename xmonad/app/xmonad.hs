@@ -34,7 +34,7 @@ import Debug.Trace
 main :: IO ()
 main = do
   n <- countScreens :: IO Int
-  bars <- mapM (spawnPipe . (++) "xmobar /home/foresta/dotfiles/xmonad/app/xmobarrc -x " . show) [0..n-1] 
+  bars <- mapM (spawnPipe . (++) "xmobar $HOME/.config/xmonad/xmobarrc -x " . show) [0..n-1] 
   let barmap = fromList $ zip [0..n-1] bars
   xmonad $ def 
     { terminal = myTerminal
