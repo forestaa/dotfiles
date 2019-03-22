@@ -75,6 +75,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 # ruby
@@ -90,10 +91,15 @@ fi
 
 # ocaml
 if command -v opam 1>/dev/null 2>&1; then
-  eval "$(opam config env)"
+  # eval "$(opam config env)"
+  test -r /home/foresta/.opam/opam-init/init.zsh && . /home/foresta/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 fi
+
+# go
+export GOPATH="$HOME/go"
 
 export DISPLAY=localhost:0.0
 
 # vagrant in wsl
 export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+
