@@ -57,7 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 # git prompt
-source /etc/bash_completion.d/git-prompt
+source /usr/share/git/completion/git-prompt.sh
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWUNTRACKEDFILES=true
 if [ "$color_prompt" = yes ]; then
@@ -150,6 +150,12 @@ fi
 if command -v opam 1>/dev/null 2>&1; then
   eval "$(opam config env)"
 fi
+
+# go
+export GOPAH="$HOME/go"
+
+# haskell stack
+export PATH="$HOME/.local/bin:$PATH"
 
 export DISPLAY=localhost:0.0
 
