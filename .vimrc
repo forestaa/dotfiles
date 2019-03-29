@@ -92,8 +92,8 @@ nnoremap gk k
 
 " neovim
 if has('nvim')
-  let g:python_host_prog = '/home/foresta/.pyenv/versions/2.7.16/envs/neovim2/bin/python'
-  let g:python3_host_prog = '/home/foresta/.pyenv/versions/3.7.2/envs/neovim3/bin/python'
+  let g:python_host_prog = '/home/foresta/.anyenv/envs/pyenv/versions/2.7.16/envs/neovim2/bin/python'
+  let g:python3_host_prog = '/home/foresta/.anyenv/envs/pyenv/versions/3.7.3/envs/neovim3/bin/python'
 
   let g:clipboard = {
   \   'name': 'win32yank',
