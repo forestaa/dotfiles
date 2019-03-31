@@ -70,30 +70,6 @@ source ~/.keychain/$(hostname)-sh
 
 alias nv='nvim'
 
-export ANYENV_ROOT="$HOME/.anyenv"
-if command -v anyenv 1>/dev/null 2>&1; then
-  eval "$(anyenv init -)"
-fi
-
-# python
-export PYENV_ROOT="$ANYENV_ROOT/envs/pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
-
-# ruby
-export PATH="$ANYENV_ROOT/envs/rbenv/bin:$PATH"
-if command -v rbenv 1>/dev/null 2>&1; then
-  eval "$(rbenv init -)"
-fi
-
-# node
-if command -v npm 1>/dev/null 2>&1; then
-  # export PATH="$HOME/.node_modules/bin:$PATH"
-fi
-
 # ocaml
 if command -v opam 1>/dev/null 2>&1; then
   # eval "$(opam config env)"
