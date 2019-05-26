@@ -3,8 +3,7 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 
-setopt autocd extendedglob nomatch notify
-unsetopt beep
+setopt autocd extendedglob nomatch notify nobeep auto_pushd auto_menu
 
 bindkey -e
 # bindkey -v
@@ -19,8 +18,7 @@ bindkey -e
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/foresta/.zshrc'
 
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit
 # End of lines added by compinstall
 
 source ~/.zplug/init.zsh
