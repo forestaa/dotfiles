@@ -87,3 +87,5 @@ export DISPLAY=localhost:0.0
 # vagrant in wsl
 export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
 
+# ruby
+export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
