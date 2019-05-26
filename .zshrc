@@ -27,6 +27,8 @@ zplug "plugins/git", from:oh-my-zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "~/.zsh",      from:local
 zplug 'dracula/zsh', as:theme
+zplug "zsh-users/zsh-autosuggestions", defer:2  
+zplug "b4b4r07/enhancd", use:init.sh
 # zplug 'wting/autojump', as:plugin, use:"$HOME/.autojump/etc/profile.d/autojump.sh", from:github, hook-build:'./install.py'
 # zplug 'chrissicool/zsh-256color'
 
