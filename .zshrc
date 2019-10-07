@@ -3,8 +3,8 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 
-setopt autocd extendedglob nomatch notify
-unsetopt beep
+
+setopt autocd extendedglob nomatch notify nobeep auto_pushd auto_menu
 
 bindkey -e
 # bindkey -v
@@ -19,16 +19,18 @@ bindkey -e
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/foresta/.zshrc'
 
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit
 # End of lines added by compinstall
 
-source ~/.zplug/init.zsh
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "plugins/git", from:oh-my-zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "~/.zsh",      from:local
 zplug 'dracula/zsh', as:theme
+zplug "zsh-users/zsh-autosuggestions", defer:2  
+zplug "b4b4r07/enhancd", use:init.sh
 # zplug 'wting/autojump', as:plugin, use:"$HOME/.autojump/etc/profile.d/autojump.sh", from:github, hook-build:'./install.py'
 # zplug 'chrissicool/zsh-256color'
 
@@ -43,8 +45,6 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 # zplug load --verbose
-
-
 # ignore case when typing lowercase, but respect case when typing uppercase
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 
@@ -64,33 +64,28 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# keychain
-keychain --nogui --quiet
-source ~/.keychain/$(hostname)-sh
 
 alias nv='nvim'
 
-# python
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+export PATH="$HOME/.local/bin:$PATH"
+
+# go
+export GOPATH="$HOME/.go"
+export PATH="$GOPATH/bin:$PATH"
 
 # ruby
-export PATH="$HOME/.rbenv/bin:$PATH"
-if command -v rbenv 1>/dev/null 2>&1; then
-  eval "$(rbenv init -)"
-fi
+# export PATH="/usr/local/Cellar/ruby/2.6.2/bin:$PATH"
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+chruby 2.6.1
 
-# node
-if command -v npm 1>/dev/null 2>&1; then
-  export PATH="$HOME/.node_modules/bin:$PATH"
-fi
+# gcloud
+source $HOME/build/google-cloud-sdk/completion.zsh.inc
+source $HOME/build/google-cloud-sdk/path.zsh.inc
 
-# ocaml
-if command -v opam 1>/dev/null 2>&1; then
-  eval "$(opam config env)"
-fi
+# jenv
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
 
-export DISPLAY=localhost:0.0
+# perlbrew
+source $HOME/perl5/perlbrew/etc/bashrc
