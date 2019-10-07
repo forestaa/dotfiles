@@ -67,25 +67,38 @@ alias l='ls -CF'
 
 alias nv='nvim'
 
-export PATH="$HOME/.local/bin:$PATH"
+if command -v stack 1>/dev/null 2>&1; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
 
 # go
-export GOPATH="$HOME/.go"
-export PATH="$GOPATH/bin:$PATH"
+if command -v go 1>/dev/null 2>&1; then
+  export GOPATH="$HOME/.go"
+  export PATH="$GOPATH/bin:$PATH"
+fi
 
 # ruby
 # export PATH="/usr/local/Cellar/ruby/2.6.2/bin:$PATH"
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
-chruby 2.6.1
+if command -v chruby 1>/dev/null 2>&1; then
+  source /usr/local/opt/chruby/share/chruby/chruby.sh
+  source /usr/local/opt/chruby/share/chruby/auto.sh
+  chruby 2.6.1
+fi
 
 # gcloud
-source $HOME/build/google-cloud-sdk/completion.zsh.inc
-source $HOME/build/google-cloud-sdk/path.zsh.inc
+if command -v gcloud 1>/dev/null 2>&1; then
+  source $HOME/build/google-cloud-sdk/completion.zsh.inc
+  source $HOME/build/google-cloud-sdk/path.zsh.inc
+fi
 
 # jenv
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+if command -v jenv 1>/dev/null 2>&1; then
+  export PATH="$HOME/.jenv/bin:$PATH"
+  eval "$(jenv init -)"
+fi
 
 # perlbrew
-source $HOME/perl5/perlbrew/etc/bashrc
+if command -v perlbrew 1>/dev/null 2>&1; then
+  source $HOME/perl5/perlbrew/etc/bashrc
+fi
+
