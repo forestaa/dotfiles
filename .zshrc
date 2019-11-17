@@ -70,6 +70,11 @@ source ~/.keychain/$(hostname)-sh
 
 alias nv='nvim'
 
+# xdg base directory
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME=$HOME/.local/share
+
 # ocaml
 if command -v opam 1>/dev/null 2>&1; then
   # eval "$(opam config env)"
