@@ -98,3 +98,7 @@ export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
 # ghcup
 source $HOME/.ghcup/env
 
+# nvm
+source /usr/share/nvm/init-nvm.sh
+
+
