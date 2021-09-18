@@ -159,3 +159,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 export DISPLAY=localhost:0.0
 
+
+# >>>> Vagrant command completion (start)
+. /mnt/c/Users/tdaic/project/vagrant/contrib/bash/completion.sh
+# <<<<  Vagrant command completion (end)
