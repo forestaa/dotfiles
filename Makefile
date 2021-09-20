@@ -4,7 +4,9 @@ SRCS := $(filter-out $(EXCLUDES), $(TARGET))
 DIR := $(PWD)
 NVIM := $(HOME)/.config/nvim
 
-deploy: deploy-nvim
+all: deploy-config
+
+deploy-config: deploy-nvim
 	@$(foreach val, $(SRCS), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 
 deploy-nvim:
