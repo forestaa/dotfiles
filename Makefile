@@ -9,5 +9,3 @@ deploy:
 	mkdir -p $(NVIM)
 	ln -sfnv $(abspath $(DIR)/.vimrc) $(NVIM)/init.vim
 
-init:
-	@$(foreach val, $(wildcard $(DIR)/etc/init/*.sh), bash $(val);)
