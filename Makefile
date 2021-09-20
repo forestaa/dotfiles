@@ -4,7 +4,10 @@ SRCS := $(filter-out $(EXCLUDES), $(TARGET))
 DIR := $(PWD)
 NVIM := $(HOME)/.config/nvim
 
-all: deploy-config
+all: deploy-config install-package
+
+install-package:
+	sudo pacman -S --needed - < pkglist.txt
 
 deploy-config: deploy-nvim deploy-zshrc
 	@$(foreach val, $(SRCS), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
