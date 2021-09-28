@@ -4,10 +4,11 @@ SRCS := $(filter-out $(EXCLUDES), $(TARGET))
 DIR := $(PWD)
 NVIM := $(HOME)/.config/nvim
 
-deploy:
+all: deploy-config
+
+deploy-config: deploy-nvim
 	@$(foreach val, $(SRCS), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
+
+deploy-nvim:
 	mkdir -p $(NVIM)
 	ln -sfnv $(abspath $(DIR)/.vimrc) $(NVIM)/init.vim
-
-init:
-	@$(foreach val, $(wildcard $(DIR)/etc/init/*.sh), bash $(val);)

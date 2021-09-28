@@ -1,54 +1,42 @@
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-
-
-setopt autocd extendedglob nomatch notify nobeep auto_pushd auto_menu
-
-bindkey -e
-# bindkey -v
-# bindkey -M viins '^?'  backward-delete-char
-# bindkey -M viins '^A'  beginning-of-line
-# bindkey -M viins '^B'  backward-char
-# bindkey -M viins '^D'  delete-char-or-list
-# bindkey -M viins '^E'  end-of-line
-# bindkey -M viins '^F'  forward-char
-
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/home/foresta/.zshrc'
-
-autoload -Uz compinit && compinit
-# End of lines added by compinstall
-
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "plugins/git", from:oh-my-zsh
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "~/.zsh",      from:local
-zplug 'dracula/zsh', as:theme
-zplug "zsh-users/zsh-autosuggestions", defer:2  
-zplug "b4b4r07/enhancd", use:init.sh
-# zplug 'wting/autojump', as:plugin, use:"$HOME/.autojump/etc/profile.d/autojump.sh", from:github, hook-build:'./install.py'
-# zplug 'chrissicool/zsh-256color'
-
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Then, source plugins and add commands to $PATH
-zplug load
-# zplug load --verbose
-# ignore case when typing lowercase, but respect case when typing uppercase
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 
-export PROMPT=$'%{$fg_bold[green]%}%n@%m %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)\n%{$fg[blue]%}->%{$fg_bold[blue]%} %#%{$reset_color%} '
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}âââ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})â¦%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}âââ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}âââ The clone has failed.%f%b"
+fi
+
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
+
+### End of Zinit's installer chunk
+
+zinit light zsh-users/zsh-autosuggestions
+zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma/history-search-multi-word
+zinit light b4b4r07/enhancd
+zinit depth=1 light-mode for romkatv/powerlevel10k
+zinit depth=1 light-mode for jeffreytse/zsh-vi-mode
+
+bindkey -v
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -64,41 +52,8 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-
+# nvim
 alias nv='nvim'
 
-if command -v stack 1>/dev/null 2>&1; then
-  export PATH="$HOME/.local/bin:$PATH"
-fi
-
-# go
-if command -v go 1>/dev/null 2>&1; then
-  export GOPATH="$HOME/.go"
-  export PATH="$GOPATH/bin:$PATH"
-fi
-
-# ruby
-# export PATH="/usr/local/Cellar/ruby/2.6.2/bin:$PATH"
-if command -v chruby 1>/dev/null 2>&1; then
-  source /usr/local/opt/chruby/share/chruby/chruby.sh
-  source /usr/local/opt/chruby/share/chruby/auto.sh
-  chruby 2.6.1
-fi
-
-# gcloud
-if command -v gcloud 1>/dev/null 2>&1; then
-  source $HOME/build/google-cloud-sdk/completion.zsh.inc
-  source $HOME/build/google-cloud-sdk/path.zsh.inc
-fi
-
-# jenv
-if command -v jenv 1>/dev/null 2>&1; then
-  export PATH="$HOME/.jenv/bin:$PATH"
-  eval "$(jenv init -)"
-fi
-
-# perlbrew
-if command -v perlbrew 1>/dev/null 2>&1; then
-  source $HOME/perl5/perlbrew/etc/bashrc
-fi
-
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
