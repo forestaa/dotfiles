@@ -37,6 +37,7 @@ zinit depth=1 light-mode for romkatv/powerlevel10k
 zinit depth=1 light-mode for jeffreytse/zsh-vi-mode
 
 bindkey -v
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -54,6 +55,60 @@ alias l='ls -CF'
 
 # nvim
 alias nv='nvim'
+
+# Prevent unintentioal git push to master
+function dry-run-when-git-push-to-master() {
+  if [[ $BUFFER =~ .*git[[:space:]]+push && "$(git branch --show-current)" = "master" ]]; then
+    echo ""
+    if [[ ! $BUFFER =~ --exec ]]; then
+      echo "[dry-run-when-git-push-to-master]: You are on master branch. Run git push in dry-run mode."
+      echo "[dry-run-when-git-push-to-master]: Put '--exec' if you really want to run git push."
+      local command="${BUFFER} --dry-run"
+    else
+      local command="${BUFFER/--exec/}"
+    fi
+    zle .kill-buffer
+    echo "[dry-run-when-git-push-to-master]: current branch: $(git branch --show-current)"
+    echo "[dry-run-when-git-push-to-master]: command"
+    BUFFER="  ${command}"
+  fi
+  zle .accept-line
+}
+zle -N accept-line dry-run-when-git-push-to-master
+
+# go
+if command -v go 1>/dev/null 2>&1; then
+  export GOPATH="$HOME/.go"
+  export PATH="$GOPATH/bin:$PATH"
+fi
+
+ # gcloud
+if command -v gcloud 1>/dev/null 2>&1; then
+  source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+  source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+fi
+
+# aws-vaultのAssumeRoleのsession timeout
+export AWS_ASSUME_ROLE_TTL=1h
+
+# okta-aws-dena
+export PATH=/Users/daichi.morita/DeNA/alasys/tools/okta-utils:$PATH
+
+# openssl
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+
+# krew
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# terraform
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/terraform terraform
+
+# asdf
+source /usr/local/opt/asdf/libexec/asdf.sh
+source $HOME/.asdf/plugins/java/set-java-home.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

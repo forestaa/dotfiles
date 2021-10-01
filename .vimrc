@@ -37,17 +37,5 @@ endif
 
 " neovim
 if has('nvim')
-  let g:clipboard = {
-  \   'name': 'win32yank',
-  \   'copy': {
-  \     '+': '/mnt/c/Users/tdaic/AppData/Local/win32yank/win32yank.exe -i',
-  \     '*': '/mnt/c/Users/tdaic/AppData/Local/win32yank/win32yank.exe -i',
-  \   },
-  \   'paste': {
-  \     '+': '/mnt/c/Users/tdaic/AppData/Local/win32yank/win32yank.exe -o',
-  \     '*': '/mnt/c/Users/tdaic/AppData/Local/win32yank/win32yank.exe -o',
-  \   },
-  \   'cache_enabled': 1,
-  \ }
 endif
 
