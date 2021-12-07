@@ -4,6 +4,7 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'tomasr/molokai'
+Plug 'tpope/vim-surround'
 " Initialize plugin system
 call plug#end()
 
@@ -29,6 +30,17 @@ set noswapfile
 " set clipboard=unnamed
 " set clipboard+=autoselect
 set clipboard+=unnamedplus
+
+" swap up and down key
+if exists('g:vscode')
+  nmap j gj
+  nmap k gk
+else
+  nnoremap j gj
+  nnoremap k gk
+  nnoremap gj j
+  nnoremap gk k
+endif
 
 " mouse scroll, but it doesn't work in tmux
 if has('mouse')
