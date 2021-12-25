@@ -88,12 +88,6 @@ if command -v gcloud 1>/dev/null 2>&1; then
   source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
 fi
 
-# aws-vaultのAssumeRoleのsession timeout
-export AWS_ASSUME_ROLE_TTL=1h
-
-# okta-aws-dena
-export PATH=/Users/daichi.morita/DeNA/alasys/tools/okta-utils:$PATH
-
 # openssl
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
