@@ -2,7 +2,8 @@ EXCLUDES := .git
 TARGET := $(wildcard .??*)
 SRCS := $(filter-out $(EXCLUDES), $(TARGET))
 DIR := $(PWD)
-NVIM := $(HOME)/.config/nvim
+CONFIG := $(HOME)/.config
+NVIM := $(CONFIG)/nvim
 
 all: deploy-config
 
@@ -12,3 +13,7 @@ deploy-config: deploy-nvim
 deploy-nvim:
 	mkdir -p $(NVIM)
 	ln -sfnv $(abspath $(DIR)/.vimrc) $(NVIM)/init.vim
+
+deploy-karabiner:
+	cp -r $(DIR)/.config/karabiner $(CONFIG)/
+
