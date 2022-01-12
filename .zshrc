@@ -93,16 +93,11 @@ export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
 
-# krew
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
-# terraform
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terraform terraform
-
 # asdf
-source /usr/local/opt/asdf/libexec/asdf.sh
-source $HOME/.asdf/plugins/java/set-java-home.zsh
+if command -v asdf 1>/dev/null 2>&1; then
+  source /usr/local/opt/asdf/libexec/asdf.sh
+  source $HOME/.asdf/plugins/java/set-java-home.zsh
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
