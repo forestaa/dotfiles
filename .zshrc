@@ -37,7 +37,11 @@ zinit depth=1 light-mode for romkatv/powerlevel10k
 zinit depth=1 light-mode for jeffreytse/zsh-vi-mode
 
 bindkey -v
+autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
+export HISTSIZE=1000000
+export SAVEHIST=$HISTSIZE
+setopt EXTENDED_HISTORY
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -96,7 +100,7 @@ export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
 # asdf
 if command -v asdf 1>/dev/null 2>&1; then
   source /usr/local/opt/asdf/libexec/asdf.sh
-  source $HOME/.asdf/plugins/java/set-java-home.zsh
+  # source $HOME/.asdf/plugins/java/set-java-home.zsh
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
