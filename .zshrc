@@ -31,9 +31,9 @@ zinit light-mode for \
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zdharma-continuum/history-search-multi-word
-zinit light b4b4r07/enhancd
 zinit depth=1 light-mode for romkatv/powerlevel10k
 zinit depth=1 light-mode for jeffreytse/zsh-vi-mode
+zinit depth=1 light-mode rustup cargo='zoxide' atload='eval "$(zoxide init zsh)"' for zdharma-continuum/null
 
 bindkey -v
 
