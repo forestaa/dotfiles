@@ -5,6 +5,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+bindkey -v
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt extendedglob notify nobeep
+autoload -Uz compinit && compinit
+
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
@@ -35,7 +42,6 @@ zinit depth=1 light-mode for romkatv/powerlevel10k
 zinit depth=1 light-mode for jeffreytse/zsh-vi-mode
 zinit depth=1 light-mode rustup cargo='zoxide' atload='eval "$(zoxide init zsh)"' for zdharma-continuum/null
 
-bindkey -v
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
