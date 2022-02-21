@@ -35,12 +35,12 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light zdharma-continuum/history-search-multi-word
-zinit depth=1 light-mode for romkatv/powerlevel10k
-zinit depth=1 light-mode for jeffreytse/zsh-vi-mode
-zinit depth=1 light-mode rustup cargo='zoxide' atload='eval "$(zoxide init zsh)"' for zdharma-continuum/null
+zinit light-mode for zsh-users/zsh-autosuggestions
+zinit light-mode for zdharma-continuum/fast-syntax-highlighting
+zinit light-mode for zdharma-continuum/history-search-multi-word
+zinit light-mode depth=1 for romkatv/powerlevel10k
+zinit light-mode for jeffreytse/zsh-vi-mode
+zinit light-mode rustup cargo='zoxide' atload='eval "$(zoxide init zsh)"' for zdharma-continuum/null
 
 
 if [ -x /usr/bin/dircolors ]; then
