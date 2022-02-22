@@ -60,5 +60,8 @@ alias l='ls -CF'
 # nvim
 alias nv='nvim'
 
+# ghcup
+[ -f "/home/foresta/.ghcup/env" ] && source "/home/foresta/.ghcup/env" # ghcup-env
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
