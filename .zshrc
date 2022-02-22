@@ -37,7 +37,7 @@ zinit light-mode for \
 
 zinit light-mode for zsh-users/zsh-autosuggestions
 zinit light-mode for zdharma-continuum/fast-syntax-highlighting
-zinit light-mode for zdharma-continuum/history-search-multi-word
+zinit light-mode wait for zdharma-continuum/history-search-multi-word
 zinit light-mode depth=1 for romkatv/powerlevel10k
 zinit light-mode for jeffreytse/zsh-vi-mode
 zinit light-mode rustup cargo='zoxide' atload='eval "$(zoxide init zsh)"' for zdharma-continuum/null
