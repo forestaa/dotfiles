@@ -105,10 +105,5 @@ if command -v asdf 1>/dev/null 2>&1; then
 fi
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
-if command -v go 1>/dev/null 2>&1; then
-  export GOPATH="$HOME/.go"
-  export PATH="$GOPATH/bin:$PATH"
-fi
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
