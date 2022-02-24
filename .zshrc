@@ -5,6 +5,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+bindkey -v
+export HISTFILE=~/.zsh_history
+export HISTSIZE=100000
+export SAVEHIST=100000
+setopt extendedglob notify nobeep
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
+
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
@@ -35,14 +43,6 @@ zinit light zdharma-continuum/history-search-multi-word
 zinit light b4b4r07/enhancd
 zinit depth=1 light-mode for romkatv/powerlevel10k
 zinit depth=1 light-mode for jeffreytse/zsh-vi-mode
-
-bindkey -v
-autoload -Uz compinit && compinit
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
-export HISTSIZE=1000000
-export SAVEHIST=$HISTSIZE
-setopt EXTENDED_HISTORY
-setopt no_beep
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
