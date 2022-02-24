@@ -30,19 +30,18 @@ autoload -Uz _zinit
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
-    zdharma-continuum/z-a-rust \
-    zdharma-continuum/z-a-as-monitor \
-    zdharma-continuum/z-a-patch-dl \
-    zdharma-continuum/z-a-bin-gem-node
+    zdharma-continuum/zinit-annex-rust \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-bin-gem-node
 
 ### End of Zinit's installer chunk
 
-zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light zdharma-continuum/history-search-multi-word
-zinit light b4b4r07/enhancd
-zinit depth=1 light-mode for romkatv/powerlevel10k
-zinit depth=1 light-mode for jeffreytse/zsh-vi-mode
+zinit light-mode for zsh-users/zsh-autosuggestions
+zinit light-mode for zdharma-continuum/fast-syntax-highlighting
+zinit light-mode wait for zdharma-continuum/history-search-multi-word
+zinit light-mode depth=1 for romkatv/powerlevel10k
+zinit light-mode for jeffreytse/zsh-vi-mode
+zinit light-mode rustup cargo='zoxide' atload='eval "$(zoxide init zsh)"' for zdharma-continuum/null
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
