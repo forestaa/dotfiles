@@ -60,6 +60,9 @@ alias l='ls -CF'
 # nvim
 alias nv='nvim'
 
+# fzf
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --preview "ls {}"'
+
 # ghcup
 [ -f "/home/foresta/.ghcup/env" ] && source "/home/foresta/.ghcup/env" # ghcup-env
 
