@@ -42,6 +42,7 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 export HISTSIZE=1000000
 export SAVEHIST=$HISTSIZE
 setopt EXTENDED_HISTORY
+setopt no_beep
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
