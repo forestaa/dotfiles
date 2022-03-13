@@ -52,3 +52,16 @@ if has('nvim')
   \ }
 endif
 
+if exists('g:vscode')
+  nmap j gj
+  nmap k gk
+  nmap <Down> gj
+  nmap <Up>   gk
+else
+  nnoremap j gj
+  nnoremap k gk
+  nnoremap <Down> gj
+  nnoremap <Up>   gk
+  nnoremap gj j
+  nnoremap gk k
+endif
