@@ -63,6 +63,10 @@ alias nv='nvim'
 # fzf
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
 
+# keychain
+keychain --nogui --quiet
+source ~/.keychain/$(hostname)-sh
+
 # ghcup
 [ -f "/home/foresta/.ghcup/env" ] && source "/home/foresta/.ghcup/env" # ghcup-env
 
