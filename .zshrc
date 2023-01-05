@@ -42,6 +42,7 @@ zinit light-mode wait for zdharma-continuum/history-search-multi-word
 zinit light-mode depth=1 for romkatv/powerlevel10k
 zinit light-mode for jeffreytse/zsh-vi-mode
 zinit light-mode rustup cargo='zoxide' atload='eval "$(zoxide init zsh)"; export _ZO_FZF_OPTS="--height 40% --layout=reverse"' for zdharma-continuum/null
+zinit snippet 'https://github.com/halcyon/asdf-java/blob/master/set-java-home.zsh'
 
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -102,7 +103,23 @@ if command -v asdf 1>/dev/null 2>&1; then
   source /usr/local/opt/asdf/libexec/asdf.sh
   # source $HOME/.asdf/plugins/java/set-java-home.zsh
 fi
+
+# krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+# fzf
+export FZF_DEFAULT_OPTS="--height 40% --layout=reverse"
+
+# code with fzf
+alias ghcode='code $(ghq list -p | fzf)'
+
+# ghcup
+[ -f "/Users/daichi.morita/.ghcup/env" ] && source "/Users/daichi.morita/.ghcup/env" # ghcup-env
+
+# Added by Docker Desktop
+[ -f "/Users/daichi.morita/.docker/init-zsh.sh" ] && source /Users/daichi.morita/.docker/init-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
