@@ -13,7 +13,3 @@ deploy-config: deploy-nvim
 deploy-nvim:
 	mkdir -p $(NVIM)
 	ln -sfnv $(abspath $(DIR)/.vimrc) $(NVIM)/init.vim
-
-deploy-karabiner:
-	cp -r $(DIR)/.config/karabiner $(CONFIG)/
-
