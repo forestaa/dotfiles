@@ -100,8 +100,8 @@ export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
 
 # asdf
 if command -v asdf 1>/dev/null 2>&1; then
-  source /usr/local/opt/asdf/libexec/asdf.sh
-  # source $HOME/.asdf/plugins/java/set-java-home.zsh
+  source $(brew --prefix asdf)/libexec/asdf.sh
+  source $HOME/.asdf/plugins/java/set-java-home.zsh
 fi
 
 # krew
