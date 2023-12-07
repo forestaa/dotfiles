@@ -10,6 +10,7 @@ export HISTFILE=~/.zsh_history
 export HISTSIZE=100000
 export SAVEHIST=100000
 setopt extendedglob notify nobeep
+autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}'
 
@@ -61,6 +62,13 @@ alias l='ls -CF'
 # nvim
 alias nv='nvim'
 
+# zsh-vi-mode
+function zvm_vi_yank() {
+	zvm_yank
+	printf ${CUTBUFFER} | pbcopy
+	zvm_exit_visual_mode
+}
+
 # Prevent unintentioal git push to master
 function dry-run-when-git-push-to-master() {
   if [[ $BUFFER =~ .*git[[:space:]]+push && "$(git branch --show-current)" = "master" ]]; then
@@ -89,8 +97,12 @@ fi
 
  # gcloud
 if command -v gcloud 1>/dev/null 2>&1; then
-  source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-  source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+  source $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+  source $(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+fi
+
+if command -v aws 1>/dev/null 2>&1; then
+  complete -C $(brew --prefix awscli)/bin/aws_completer aws
 fi
 
 # openssl
@@ -112,6 +124,7 @@ export FZF_DEFAULT_OPTS="--height 40% --layout=reverse"
 
 # code with fzf
 alias ghcode='code $(ghq list -p | fzf)'
+alias ghidea='idea $(ghq list -p | fzf)'
 
 # ghcup
 [ -f "/Users/daichi.morita/.ghcup/env" ] && source "/Users/daichi.morita/.ghcup/env" # ghcup-env
