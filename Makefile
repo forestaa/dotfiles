@@ -4,6 +4,7 @@ SRCS := $(filter-out $(EXCLUDES), $(TARGET))
 DIR := $(PWD)
 CONFIG := $(HOME)/.config
 NVIM := $(CONFIG)/nvim
+KARABINER := $(CONFIG)/karabiner
 
 all: deploy-config
 
@@ -13,3 +14,7 @@ deploy-config: deploy-nvim
 deploy-nvim:
 	mkdir -p $(NVIM)
 	ln -sfnv $(abspath $(DIR)/.vimrc) $(NVIM)/init.vim
+
+deploy-karabiner:
+	mkdir -p $(KARABINER)
+	ln -sfnv $(abspath $(DIR)/.config/karabiner) $(KARABINER)

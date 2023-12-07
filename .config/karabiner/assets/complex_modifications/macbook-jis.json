@@ -1,0 +1,110 @@
+{
+    "title": "Macbook JIS",
+    "rules": [
+        {
+            "description": "JISキーボードの英数キーをIMEのON/OFF切り替えキーに変換",
+            "manipulators": [
+                {
+                    "conditions": [
+                        {
+                            "type": "input_source_if",
+                            "input_sources": [
+                                {
+                                    "language": "en"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "device_if",
+                            "identifiers": [
+                                {
+                                    "is_keyboard": true,
+                                    "is_pointing_device": false,
+                                    "product_id": 835,
+                                    "vendor_id": 1452
+                                }
+                            ]
+                        }
+                    ],
+                    "from": {
+                        "key_code": "japanese_eisuu"
+                    },
+                    "to": [
+                        {
+                            "select_input_source": {
+                                "input_source_id": "^com\\.google\\.inputmethod\\.Japanese\\.base$"
+                            }
+                        }
+                    ],
+                    "type": "basic"
+                },
+                {
+                    "conditions": [
+                        {
+                            "type": "input_source_if",
+                            "input_sources": [
+                                {
+                                    "language": "ja"
+                                }
+                            ]
+                        },
+                        {
+                          "type": "device_if",
+                          "identifiers": [
+                              {
+                                  "is_keyboard": true,
+                                  "is_pointing_device": false,
+                                  "product_id": 835,
+                                  "vendor_id": 1452
+                              }
+                          ]
+                        }
+                    ],
+                    "from": {
+                        "key_code": "japanese_eisuu"
+                    },
+                    "to": [
+                        {
+                            "select_input_source": {
+                                "input_source_id": "^com\\.google\\.inputmethod\\.Japanese\\.Roman$"
+                            }
+                        }
+                    ],
+                    "type": "basic"
+                }
+            ]
+        },
+        {
+            "description": "JISキーボードの英数キーをCtrl+Spaceに変換",
+            "manipulators": [
+                {
+                    "conditions": [
+                        {
+                            "type": "device_if",
+                            "identifiers": [
+                                {
+                                    "is_keyboard": true,
+                                    "is_pointing_device": false,
+                                    "product_id": 835,
+                                    "vendor_id": 1452
+                                }
+                            ]
+                        }
+                    ],
+                    "from": {
+                        "key_code": "japanese_eisuu"
+                    },
+                    "to": [
+                        {
+                            "key_code": "spacebar",
+                            "modifiers": [
+                                "left_control"
+                            ]
+                        }
+                    ],
+                    "type": "basic"
+                }            
+            ]
+        }
+    ]
+}
