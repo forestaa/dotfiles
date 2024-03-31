@@ -5,6 +5,7 @@ DIR := $(PWD)
 CONFIG := $(HOME)/.config
 NVIM := $(CONFIG)/nvim
 KARABINER := $(CONFIG)/karabiner
+WEZTERM := $(CONFIG)/wezterm
 
 all: deploy-config
 
@@ -18,3 +19,7 @@ deploy-nvim:
 deploy-karabiner:
 	mkdir -p $(KARABINER)
 	ln -sfnv $(abspath $(DIR)/.config/karabiner) $(KARABINER)
+
+deploy-wezterm:
+	mkdir -p $(KARABINER)
+	ln -sfnv $(abspath $(DIR)/.config/wezterm) $(WEZTERM)
