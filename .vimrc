@@ -58,6 +58,7 @@ if exists('g:vscode')
   nmap <Down> gj
   nmap <Up>   gk
   nnoremap gb <Cmd>lua require('vscode-neovim').action('workbench.action.navigateBack')<CR>
+  nnoremap gn <Cmd>lua require('vscode-neovim').action('workbench.action.navigateForward')<CR>
 else
   nnoremap j gj
   nnoremap k gk
